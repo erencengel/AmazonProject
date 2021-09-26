@@ -2,6 +2,7 @@ package com.amazon.step_defs;
 
 import com.amazon.pages.HomePage;
 import com.amazon.pages.LaptopPage;
+import com.amazon.pages.ShoppingCartPage;
 import com.amazon.utilities.BrowserUtils;
 import com.amazon.utilities.ConfigurationReader;
 import com.amazon.utilities.Driver;
@@ -9,14 +10,10 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.junit.Assert;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import java.util.*;
 
 public class StockDefs {
-
-    //jsExecutor
-    JavascriptExecutor jse = (JavascriptExecutor) Driver.get();
 
     //create a global HomePage object
     HomePage homePage = new HomePage();
@@ -50,8 +47,11 @@ public class StockDefs {
         homePage.click();
     }
 
+
+
     //create a global object based on the LaptopPage class
     LaptopPage laptopPage = new LaptopPage();
+    Set<String> expectedList0fLaptop = new TreeSet<>();
     @Then("Select non-discounted products and add into the stock")
     public void selectNonDiscountedProductsAndAddIntoTheStock() {
 
@@ -61,20 +61,63 @@ public class StockDefs {
 
         for (int i=0;i<5;i++){
             laptopIcon.get(i).click();
-            BrowserUtils.waitForClickability(new LaptopPage().addToCardButton,10);
-
-            try {
-                if(new LaptopPage().listPriceForDiscount.getText().contains("List")){}
-            }catch (RuntimeException runtimeException){
-                new LaptopPage().addToCardButton.click();
-                BrowserUtils.waitForClickability(new LaptopPage().cartSign,10);
+            BrowserUtils.waitForClickability(laptopPage.addToCardButton,10);
+            if(laptopPage.listPriceForDiscount.size()==0){
+                //create expected list of laptop
+                expectedList0fLaptop.add(laptopPage.textOfEachLaptop.getText());
+                laptopPage.addToCardButton.click();
+                BrowserUtils.waitForClickability(laptopPage.cartSign,10);
+                Driver.get().get("https://www.amazon.com/s?k=laptop&ref=nb_sb_noss_2");
+            }else {
                 Driver.get().navigate().back();
-                BrowserUtils.waitForClickability(new LaptopPage().addToCardButton,10);
             }
+            BrowserUtils.waitForVisibility(laptopPage.laptopStatement,10);
+        }
+        System.out.println("expectedList0fLaptop = " + expectedList0fLaptop);
+        System.out.println("expectedList0fLaptop.size() = " + expectedList0fLaptop.size());
+    }
 
-            Driver.get().navigate().back();
-            BrowserUtils.waitForVisibility(new LaptopPage().laptopStatement,10);
+
+    @Given("Go to inputbox")
+    public void goToInputbox() {
+        laptopPage.cartSign.click();
+        BrowserUtils.waitForClickability(laptopPage.cartSign,10);
+    }
+
+
+    ShoppingCartPage shoppingCartPage = new ShoppingCartPage();
+    Set<String> actualListOfLaptop = new TreeSet<>();
+    @When("Take all products and place in a set")
+    public void takeAllProductsandPlaceinaSet() {
+
+        for(int i=0;i<shoppingCartPage.eachProduct.size();i++){
+            WebElement element = shoppingCartPage.eachProduct.get(i);
+            String text = element.getText();
+            String finalText = text.substring(0,text.length()-1);
+            actualListOfLaptop.add(finalText);
         }
 
+        System.out.println("actualListOfLaptop = " + actualListOfLaptop);
+        System.out.println("actualListOfLaptop.size() = " + actualListOfLaptop.size());
+
+    }
+
+
+    List<String> expected = new ArrayList<>();
+    List<String> actual = new ArrayList<>();
+    @Then("Verify the products are right")
+    public void verifyTheProductsAreRight() {
+        for (String str : expectedList0fLaptop) {
+            expected.add(str);
+        }
+        System.out.println("expected = " + expected);
+        for (String s : actualListOfLaptop) {
+            actual.add(s);
+        }
+        System.out.println("actual = " + actual);
+        //verify lists are the same
+        for (int i=0;i<expected.size();i++){
+            Assert.assertTrue(expected.get(i).contains(actual.get(i)));
+        }
     }
 }
