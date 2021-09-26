@@ -6,6 +6,7 @@ import com.amazon.pages.ShoppingCartPage;
 import com.amazon.utilities.BrowserUtils;
 import com.amazon.utilities.ConfigurationReader;
 import com.amazon.utilities.Driver;
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -14,6 +15,7 @@ import org.openqa.selenium.WebElement;
 import java.util.*;
 
 public class StockDefs {
+
 
     //create a global HomePage object
     HomePage homePage = new HomePage();
@@ -25,7 +27,7 @@ public class StockDefs {
     }
 
 
-    @Then("Verify that title contains {string}")
+    @And("Verify that title contains {string}")
     public void verifyThatTitleContains(String expectedTitle) {
         System.out.println("expectedTitle = " + expectedTitle);
         //get the actual title
@@ -36,13 +38,13 @@ public class StockDefs {
     }
 
 
-    @Given("Send {string} into the search box")
+    @When("Send {string} into the search box")
     public void sendIntoTheSearchBox(String productName) {
         //send product name into the search box
         homePage.searchBox.sendKeys(productName);
     }
 
-    @When("Click search box")
+    @And("Click search box")
     public void clickSearchBox() {
         homePage.click();
     }
@@ -52,21 +54,26 @@ public class StockDefs {
     //create a global object based on the LaptopPage class
     LaptopPage laptopPage = new LaptopPage();
     Set<String> expectedList0fLaptop = new TreeSet<>();
-    @Then("Select non-discounted products and add into the stock")
-    public void selectNonDiscountedProductsAndAddIntoTheStock() {
+    @And("Select non-discounted products and add into the stock")
+    public void selectNonDiscountedProductsAndAddIntoTheStock() throws InterruptedException {
 
         List<WebElement> laptopIcon = laptopPage.laptopIcon;
         //number of laptopIcon;
         int laptopNumber = laptopIcon.size();
 
-        for (int i=0;i<5;i++){
+        for (int i=0;i<laptopNumber;i++){
             laptopIcon.get(i).click();
             BrowserUtils.waitForClickability(laptopPage.addToCardButton,10);
             if(laptopPage.listPriceForDiscount.size()==0){
                 //create expected list of laptop
                 expectedList0fLaptop.add(laptopPage.textOfEachLaptop.getText());
                 laptopPage.addToCardButton.click();
-                BrowserUtils.waitForClickability(laptopPage.cartSign,10);
+                Thread.sleep(2000);
+                List<WebElement> popUp = laptopPage.popUp;
+                if(popUp.size()>0){
+                    laptopPage.popUp.get(0).click();
+                }
+                Thread.sleep(2000);
                 Driver.get().get("https://www.amazon.com/s?k=laptop&ref=nb_sb_noss_2");
             }else {
                 Driver.get().navigate().back();
@@ -78,7 +85,7 @@ public class StockDefs {
     }
 
 
-    @Given("Go to inputbox")
+    @And("Go to inputbox")
     public void goToInputbox() {
         laptopPage.cartSign.click();
         BrowserUtils.waitForClickability(laptopPage.cartSign,10);
@@ -87,7 +94,7 @@ public class StockDefs {
 
     ShoppingCartPage shoppingCartPage = new ShoppingCartPage();
     Set<String> actualListOfLaptop = new TreeSet<>();
-    @When("Take all products and place in a set")
+    @And("Take all products and place in a set")
     public void takeAllProductsandPlaceinaSet() {
 
         for(int i=0;i<shoppingCartPage.eachProduct.size();i++){

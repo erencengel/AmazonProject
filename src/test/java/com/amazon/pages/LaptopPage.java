@@ -25,4 +25,7 @@ public class LaptopPage extends BasePage{
     @FindBy(css = "#productTitle")
     public WebElement textOfEachLaptop;
 
+    @FindBy(css = "#attach-close_sideSheet-link")
+    public List<WebElement> popUp;
+
 }
