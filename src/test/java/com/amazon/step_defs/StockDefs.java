@@ -58,10 +58,8 @@ public class StockDefs {
     public void selectNonDiscountedProductsAndAddIntoTheStock() throws InterruptedException {
 
         List<WebElement> laptopIcon = laptopPage.laptopIcon;
-        //number of laptopIcon;
-        int laptopNumber = laptopIcon.size();
 
-        for (int i=0;i<laptopNumber;i++){
+        for (int i=0;i<laptopIcon.size();i++){
             laptopIcon.get(i).click();
             BrowserUtils.waitForClickability(laptopPage.addToCardButton,10);
             if(laptopPage.listPriceForDiscount.size()==0){
