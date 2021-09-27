@@ -1,6 +1,6 @@
-
+@regression
 Feature: User should able to navigate to homepage and able to search
-  @wip
+
   Scenario: Go to Amazon.com and verify
     Given Go to homepage
     And Verify that title contains "Amazon.com. Spend less. Smile more."
