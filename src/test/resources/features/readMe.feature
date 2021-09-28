@@ -11,4 +11,4 @@
 #Driver and ConfigurationReader classes for Singleton Concept
 #ExcelUtils for external files
 #BrowserUtils for some dynamic waits
-#Page Object Model as design pattern. Page object classes for keeping locators as central and manage framework easily.
+#Page Object Model as design pattern. Page object classes for keeping locators as central and to manage framework easily.
