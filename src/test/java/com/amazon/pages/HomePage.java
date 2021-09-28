@@ -9,7 +9,7 @@ public class HomePage extends BasePage{
 
     //click all button
     public void clickAllButton(){
-        allDropDownButton.click();
+        allDropDownButton.get(0).click();
     }
 
 }

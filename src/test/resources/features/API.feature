@@ -1,5 +1,4 @@
-@regression
-@wip
+@regression @Api
 Feature: API functionalities
   Background:
     Given Get a list of blog posts

@@ -1,4 +1,4 @@
-@regression
+@regression @crawl
 Feature: User should able to open up Shop By Department and make sure there are no dead links
 
   Scenario: Make sure no dead links in the 'Shop By Department' dropdown box

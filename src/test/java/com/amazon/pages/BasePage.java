@@ -20,7 +20,7 @@ public abstract class BasePage {
     public WebElement searchClickButton;
 
     @FindBy(css = "#nav-hamburger-menu")
-    public WebElement allDropDownButton;
+    public List <WebElement> allDropDownButton;
 
     @FindBy(xpath = "(//div[.='see all'])[1]")
     public WebElement seeAllStatement;
