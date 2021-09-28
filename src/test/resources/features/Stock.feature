@@ -1,6 +1,6 @@
 @regression @stock
 
-  #for first task
+  #for stock task
 
 Feature: User should able to navigate to homepage and able to search
 

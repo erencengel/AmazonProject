@@ -1,6 +1,6 @@
 @regression @crawl
 
-  #for second task
+  #for crawl task
 
 Feature: User should able to open up Shop By Department and make sure there are no dead links
 
