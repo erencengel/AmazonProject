@@ -11,6 +11,7 @@ import java.util.List;
 
 public class APIDefs {
 
+    //sends get request to the endpoint and see status code 200
 
     String url = "https://jsonplaceholder.typicode.com/posts";
     Response response;
@@ -28,8 +29,11 @@ public class APIDefs {
     }
 
 
-    List<Integer> listOfID;
-    List<Integer> listOfUserID;
+    List<Integer> listOfID; //global list of id
+    List<Integer> listOfUserID; //global list of user ID
+    //gives us number of id based on the userid
+    //arg0 --> userID
+    //arg1 --> number of total id based on userID
     @Then("Verify {string} have numposts as {int}")
     public void verifyHaveNumpostsAs(String arg0, int arg1) {
 
@@ -47,6 +51,7 @@ public class APIDefs {
 
     }
 
+    //verify that each individual user has different unique ids
     @Then("Verify that per ID is unique")
     public void verifyThatPerIDIsUnique() {
         List<String> ID = response.path("id");

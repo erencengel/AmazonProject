@@ -1,4 +1,7 @@
 @regression @stock
+
+  #for first task
+
 Feature: User should able to navigate to homepage and able to search
 
   Scenario: Go to Amazon.com and verify

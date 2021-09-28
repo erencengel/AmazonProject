@@ -1,5 +1,8 @@
 @regression @Api
 Feature: API functionalities
+
+  #for API tasks
+
   Background:
     Given Get a list of blog posts
 

@@ -20,13 +20,13 @@ public class StockDefs {
     //create a global HomePage object
     HomePage homePage = new HomePage();
 
-
+    //go to Amazon.com
     @Given("Go to homepage")
     public void go_to_homepage() {
         Driver.get().get(ConfigurationReader.get("url"));
     }
 
-
+    //verify you are in the right page
     @And("Verify that title contains {string}")
     public void verifyThatTitleContains(String expectedTitle) {
         System.out.println("expectedTitle = " + expectedTitle);
@@ -37,23 +37,25 @@ public class StockDefs {
         Assert.assertEquals(expectedTitle,actualTitle);
     }
 
-
+    //send laptop
     @When("Send {string} into the search box")
     public void sendIntoTheSearchBox(String productName) {
         //send product name into the search box
         homePage.searchBox.sendKeys(productName);
     }
 
+    //click search box
     @And("Click search box")
     public void clickSearchBox() {
         homePage.click();
     }
 
 
-
     //create a global object based on the LaptopPage class
     LaptopPage laptopPage = new LaptopPage();
+    //put into in a set all selected laptops text
     Set<String> expectedList0fLaptop = new TreeSet<>();
+    //takes all non-discount laptops and put into stock
     @And("Select non-discounted products and add into the stock")
     public void selectNonDiscountedProductsAndAddIntoTheStock() throws InterruptedException {
 
@@ -89,7 +91,7 @@ public class StockDefs {
         BrowserUtils.waitForClickability(laptopPage.cartSign,10);
     }
 
-
+    //put into a set all materials some part of text that are in the stock
     ShoppingCartPage shoppingCartPage = new ShoppingCartPage();
     Set<String> actualListOfLaptop = new TreeSet<>();
     @And("Take all products and place in a set")
@@ -107,7 +109,8 @@ public class StockDefs {
 
     }
 
-
+    //Now we have two TreeSet. All the objects that are in the sets will be transferred to two arraylist.
+    //Then we are going to compare that each object contains the other one orderly.
     List<String> expected = new ArrayList<>();
     List<String> actual = new ArrayList<>();
     @Then("Verify the products are right")

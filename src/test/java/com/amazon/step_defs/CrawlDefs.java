@@ -41,20 +41,20 @@ public class CrawlDefs {
     int rowNum=1;
     @When("Get a list of all department links and verify that no dead link exist")
     public void getAListOfAllDepartmentLinks() throws Exception {
-
+        //prepare a worksheet
         Workbook workbook = new HSSFWorkbook();
         Sheet sheet = workbook.createSheet("Data");
         Row firstRow = sheet.createRow(0);
-
+        //cell name
         Cell departmentCell = firstRow.createCell(0);
         departmentCell.setCellValue("Department");
-
+        //cell name
         Cell subDeptCell = firstRow.createCell(1);
         subDeptCell.setCellValue("SubDepartment");
-
+        //cell name
         Cell linkCell = firstRow.createCell(2);
         linkCell.setCellValue("Link");
-
+        //cell name
         Cell statusCell = firstRow.createCell(3);
         statusCell.setCellValue("Status");
 
@@ -62,6 +62,7 @@ public class CrawlDefs {
         List<WebElement> links;
         int a=5;
         WebElement department;
+        //click all shopbyDepartment links orderly
         for(int i=0;i<22;i++){
             department = Driver.get().findElement(By.xpath("//a[@data-menu-id='"+a+"']"));
             String departmentName = department.getText();
@@ -69,13 +70,14 @@ public class CrawlDefs {
             links = homePage.links;
             Thread.sleep(500);
             a++;
-
+            //take all texts and urls of subdepartments
             for (i=0;i<links.size();i++){
                 String subDepartmentName = links.get(i).getText();
                 String url = links.get(i).getAttribute("href");
                 urlS.add(url);
                 Row nextRow = sheet.createRow(rowNum);
                 rowNum++;
+                //write each data based on the info
                 Cell cell_1 = nextRow.createCell(0);
                 cell_1.setCellValue(departmentName);
                 Cell cell_2 = nextRow.createCell(1);
@@ -88,6 +90,7 @@ public class CrawlDefs {
             Thread.sleep(500);
         }
         System.out.println("urlS.size() = " + urlS.size());
+        //go and check that there is no dead link
         for (int i=0;i<urlS.size();i++) {
             Driver.get().navigate().to(urlS.get(i));
             BrowserUtils.waitForClickability(homePage.allDropDownButton.get(0),10);
@@ -99,6 +102,7 @@ public class CrawlDefs {
         }
         FileOutputStream fileOutputStream = new FileOutputStream(new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()) + "_results.xls");
         workbook.write(fileOutputStream);
+        //close text
         fileOutputStream.close();
 
     }

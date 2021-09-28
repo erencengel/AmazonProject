@@ -14,6 +14,8 @@ public class Hooks {
 
     @Before
     public void setUp(){
+        //configure some setup functionalities
+        //executed just before each scenario
         Driver.get().manage().window().maximize();
         Driver.get().manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
     }
@@ -25,6 +27,7 @@ public class Hooks {
             final byte[] screenshot = ((TakesScreenshot) Driver.get()).getScreenshotAs(OutputType.BYTES);
             scenario.attach(screenshot,"image/png","screenshot");
         }
+        //close all driver instances
         Driver.closeDriver();
     }
 
